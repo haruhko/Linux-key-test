@@ -11,7 +11,7 @@ class KeyboardTester:
     
     def __init__(self, master):
         self.master = master
-        master.title("Testeador Visual de Teclado (QWERTY / AZERTY)")
+        master.title("Keyboard Tester (US / FRENCH)")
         master.geometry("1100x750") # Tamaño ajustado para un mejor diseño
         
         # --- Variables de estado ---
@@ -35,7 +35,7 @@ class KeyboardTester:
         control_frame = ttk.Frame(main_frame)
         control_frame.pack(fill="x", pady=10)
 
-        ttk.Label(control_frame, text="Selecciona Distribución:").pack(side="left", padx=5)
+        ttk.Label(control_frame, text="Select Distribución:").pack(side="left", padx=5)
         
         self.layout_selector = ttk.Combobox(
             control_frame, 
@@ -48,7 +48,7 @@ class KeyboardTester:
         self.layout_selector.pack(side="left", padx=5)
         
         # Botón de Reset
-        ttk.Button(control_frame, text="🔁 Resetear Teclas Testeadas", command=self.reset_tested_keys).pack(side="right")
+        ttk.Button(control_frame, text="🔁 Reset Keys", command=self.reset_tested_keys).pack(side="right")
 
 
         # 2. Contenedor Principal (Teclado + Lista)
@@ -56,11 +56,11 @@ class KeyboardTester:
         content_frame.pack(fill="both", expand=True)
 
         # 2.1. Zona del Teclado (Izquierda)
-        self.keyboard_frame = ttk.LabelFrame(content_frame, text="Teclado Visual", padding="10")
+        self.keyboard_frame = ttk.LabelFrame(content_frame, text="Keyboard", padding="10")
         self.keyboard_frame.pack(side="left", fill="both", expand=True, padx=10)
         
         # 2.2. Zona de Latencias (Derecha) con Scrollbar
-        latency_group = ttk.LabelFrame(content_frame, text="Latencias Registradas (ms)", padding="10")
+        latency_group = ttk.LabelFrame(content_frame, text="Key Latency (miliseconds)", padding="10")
         latency_group.pack(side="right", fill="y", padx=10)
         
         # Lista para mostrar las latencias
@@ -179,7 +179,7 @@ class KeyboardTester:
             
     def reset_tested_keys(self):
         """Reinicia el estado de las teclas testeadas (color amarillo) y la lista de latencias."""
-        if not tkinter.messagebox.askyesno("Confirmar Reset", "¿Estás seguro de que quieres resetear el estado de todas las teclas testeadas?"):
+        if not tkinter.messagebox.askyesno("Confirm Reset", "¿Are you sure you want to reset all keys?"):
             return
 
         self.pressed_keys.clear()
@@ -190,7 +190,7 @@ class KeyboardTester:
         for widget in self.key_widgets.values():
             widget.config(bg=self.default_color)
         
-        tkinter.messagebox.showinfo("Reset Completo", "El estado de las teclas y el historial de latencias han sido reseteados.")
+        #tkinter.messagebox.showinfo("Reset Completo", "El estado de las teclas y el historial de latencias han sido reseteados.")
 
     def _create_key_widget(self, parent, text, keysym, width_ratio=1):
         """
