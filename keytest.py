@@ -108,7 +108,7 @@ class KeyboardTester:
             # Fila 1 (Números y Backspace)
             [("grave", "~ `"), ("1", "1 !"), ("2", "2 @"), ("3", "3 #"), ("4", "4 $"), 
              ("5", "5 %"), ("6", "6 ^"), ("7", "7 &"), ("8", "8 *"), ("9", "9 ("), 
-             ("0", "0 )"), ("minus", "- _"), ("equal", "= +"), ("BackSpace", "⌫ Bksp", 2.2), ("Home", "Home")],
+             ("0", "0 )"), ("minus", "- _"), ("equal", "= +"), ("BackSpace", "⌫ Bksp", 2.2), ("Home", "Home"),("End", "End")],
             # Fila 2 (QWERTY)
             [("Tab", "↹ Tab", 1.7), ("q", "Q"), ("w", "W"), ("e", "E"), ("r", "R"), 
              ("t", "T"), ("y", "Y"), ("u", "U"), ("i", "I"), ("o", "O"), 
@@ -116,11 +116,11 @@ class KeyboardTester:
             # Fila 3 (ASDF)
             [("Caps_Lock", "⇪ Caps", 2.0), ("a", "A"), ("s", "S"), ("d", "D"), ("f", "F"), 
              ("g", "G"), ("h", "H"), ("j", "J"), ("k", "K"), ("l", "L"), 
-             ("semicolon", "; :"), ("apostrophe", "' \""), ("Return", "⏎ Enter", 2.6),  ("Next", "PgDn"),("End", "End"),],
+             ("semicolon", "; :"), ("apostrophe", "' \""), ("Return", "⏎ Enter", 2.0),  ("Next", "PgDn")],
             # Fila 4 (Shift)
             [("Shift_L", "⇧ Shift", 2.5), ("z", "Z"), ("x", "X"), ("c", "C"), 
              ("v", "V"), ("b", "B"), ("n", "N"), ("m", "M"), ("comma", ", <"), 
-             ("period", ". >"), ("slash", "/ ?"), ("Shift_R", "⇧ Shift", 3.0),("", "", 1.5), ("Up", "↑"),],
+             ("period", ". >"), ("slash", "/ ?"), ("Shift_R", "⇧ Shift", 3.0), ("Up", "↑"),],
             # Fila 5 (Control, Super, Alt, Space) - Super es 'Super_L' en Tkinter
             [("Control_L", "Ctrl", 1.3), ("Super_L", "❖ Super", 1.7), ("Alt_L", "Alt", 1.3), 
              ("space", "Espacio", 7.0), 
