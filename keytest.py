@@ -48,10 +48,10 @@ class KeyboardTester:
             keyboard.Key.ctrl_r: 'Control_R',
             keyboard.Key.shift_l: 'Shift_L',
             keyboard.Key.shift_r: 'Shift_R',
-            keyboard.Key.cmd_l: 'Super_L', # Tecla Windows/Super
+            keyboard.Key.cmd_l: 'Super', # Tecla Windows/Super
             keyboard.Key.cmd_r: 'Super_R', # Tecla Windows/Super
             keyboard.Key.tab: 'Tab',
-            keyboard.Key.caps_lock: 'Caps_Lock',
+            keyboard.Key.caps_lock: 'Capsock',
             keyboard.Key.backspace: 'BackSpace',
             keyboard.Key.enter: 'Return',
             keyboard.Key.space: 'space',
