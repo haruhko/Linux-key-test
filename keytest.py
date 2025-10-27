@@ -74,6 +74,13 @@ class KeyboardTester:
         scrollbar = ttk.Scrollbar(list_frame, orient="vertical", command=self.latency_listbox.yview)
         scrollbar.pack(side="right", fill="y")
         self.latency_listbox.config(yscrollcommand=scrollbar.set)
+
+        # --- Información del Autor ---
+        self.author_label = tk.Label(master, 
+                                     text="By Andres a.k.a. @4vs3c", 
+                                     font=("Arial", 8), 
+                                     fg="gray50") # Color de texto gris suave
+        self.author_label.pack(side="bottom", pady=5) # Abajo de todo, con un pequeño padding
         
         # --- Inicialización y Eventos ---
         self.key_widgets = {} 
