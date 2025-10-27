@@ -42,10 +42,22 @@ class KeyboardTester:
         # --- Configuración de Pynput (Mapeo de teclas especiales) ---
         # Mapea las teclas de pynput a los keysyms de Tkinter
         self.key_map = {
-
+            keyboard.Key.alt_l: 'Alt_L',
+            keyboard.Key.alt_r: 'Alt_R',
+            keyboard.Key.ctrl_l: 'Control_L',
+            keyboard.Key.ctrl_r: 'Control_R',
+            keyboard.Key.shift_l: 'Shift_L',
+            keyboard.Key.shift_r: 'Shift_R',
             keyboard.Key.cmd_l: 'Super_L', # Tecla Windows/Super
             keyboard.Key.cmd_r: 'Super_R', # Tecla Windows/Super
-            keyboard.Key.print_screen: 'Print' # Tecla Print Screen
+            keyboard.Key.tab: 'Tab',
+            keyboard.Key.caps_lock: 'Caps_Lock',
+            keyboard.Key.backspace: 'BackSpace',
+            keyboard.Key.enter: 'Return',
+            keyboard.Key.space: 'space',
+            keyboard.Key.print_screen: 'Print', # Tecla Print Screen
+            keyboard.Key.delete: 'Delete',
+            keyboard.Key.insert: 'Insert',
             # ... otros mapeos especiales según necesites ...
         }
         # --- Definición de Layouts ---
