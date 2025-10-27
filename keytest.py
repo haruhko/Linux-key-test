@@ -10,7 +10,7 @@ class KeyboardTester:
 
     def __init__(self, master):
         self.master = master
-        master.title("Keyboard Tester (US / FRENCH)")
+        master.title("Keyboard Tester (EENGLISH / FRENCH)")
         master.geometry("1100x750") # Tamaño ajustado para un mejor diseño
 
         # --- Variables de estado ---
@@ -22,8 +22,8 @@ class KeyboardTester:
 
         # --- Definición de Layouts ---
         self.layouts = {
-            "Inglés (QWERTY)": self._get_qwerty_layout(),
-            "Francés (AZERTY)": self._get_azerty_layout(),
+            "English (QWERTY)": self._get_qwerty_layout(),
+            "French (AZERTY)": self._get_azerty_layout(),
         }
 
         # --- Layout de la Interfaz ---
