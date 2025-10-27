@@ -119,7 +119,7 @@ class KeyboardTester:
 
         #master.bind('<KeyPress>', self.on_key_press)
         #master.bind('<KeyRelease>', self.on_key_release)
-        master.bind('<FocusIn>', lambda e: master.focus_set()) # Asegurar que la ventana tiene el foco
+        #master.bind('<FocusIn>', lambda e: master.focus_set()) # Asegurar que la ventana tiene el foco
 
     # 3. Iniciar el Listener de pynput y el Polling de la Cola
         self._start_keyboard_listener()
