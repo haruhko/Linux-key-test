@@ -15,7 +15,19 @@ except ImportError:
     
     # Crea un mock para evitar errores graves si pynput no está instalado
     class MockKeyboard:
-        Key = type('Key', (object,), {'esc': 'Escape', 'cmd_l': 'Super_L', 'cmd_r': 'Super_R', 'print_screen': 'Print', 'caps_lock': 'Caps_Lock', 'num_lock': 'Num_Lock'})
+        # Aseguramos que las teclas especiales EXISTAN en el mock para evitar errores de referencia.
+        Key = type('Key', (object,), {
+            'esc': 'Escape', 'f1': 'F1', 'f2': 'F2', 'f3': 'F3', 'f4': 'F4', 'f5': 'F5', 'f6': 'F6', 
+            'f7': 'F7', 'f8': 'F8', 'f9': 'F9', 'f10': 'F10', 'f11': 'F11', 'f12': 'F12', 
+            'scroll_lock': 'Scroll_Lock', 'pause': 'Pause', 'cmd_l': 'Super_L', 
+            'cmd_r': 'Super_R', 'print_screen': 'Print', 'caps_lock': 'Caps_Lock', 
+            'num_lock': 'Num_Lock', 'tab': 'Tab', 'backspace': 'BackSpace', 
+            'enter': 'Return', 'space': 'space', 'delete': 'Delete', 'insert': 'Insert',
+            'menu': 'Menu', 'home': 'Home', 'end': 'End', 'page_up': 'Prior', 
+            'page_down': 'Next', 'up': 'Up', 'down': 'Down', 'left': 'Left', 
+            'right': 'Right', 'alt_l': 'Alt_L', 'alt_r': 'Alt_R', 'ctrl_l': 'Control_L', 
+            'ctrl_r': 'Control_R', 'shift_l': 'Shift_L', 'shift_r': 'Shift_R'
+        })
         def Listener(self, *args, **kwargs): return self
         def start(self): pass
         def join(self): pass
@@ -44,7 +56,9 @@ class KeyboardTester:
         
         # --- Configuración de Pynput (Mapeo de teclas especiales) ---
         # Mapea las teclas de pynput a los keysyms de Tkinter
+        # ¡AQUÍ ESTÁ LA CORRECCIÓN! Incluimos todas las teclas de función y otras especiales.
         self.key_map = {
+            # Modificadores
             keyboard.Key.alt_l: 'Alt_L',
             keyboard.Key.alt_r: 'Alt_R',
             keyboard.Key.ctrl_l: 'Control_L',
@@ -53,16 +67,39 @@ class KeyboardTester:
             keyboard.Key.shift_r: 'Shift_R',
             keyboard.Key.cmd_l: 'Super_L', # Tecla Windows/Super Izquierda
             keyboard.Key.cmd_r: 'Super_R', # Tecla Windows/Super Derecha
+            keyboard.Key.menu: 'Menu',
+            
+            # Teclas de control (MANTENEMOS LAS QUE TENÍAS)
             keyboard.Key.tab: 'Tab',
             keyboard.Key.caps_lock: 'Caps_Lock',
             keyboard.Key.backspace: 'BackSpace',
             keyboard.Key.enter: 'Return',
             keyboard.Key.space: 'space',
-            keyboard.Key.print_screen: 'Print', # Tecla Print Screen
+            keyboard.Key.print_screen: 'Print',
             keyboard.Key.delete: 'Delete',
             keyboard.Key.insert: 'Insert',
-            keyboard.Key.menu: 'Menu',
             keyboard.Key.num_lock: 'Num_Lock',
+            
+            # TECLAS DE FUNCIÓN (NUEVAS INCLUSIONES) 💡
+            keyboard.Key.esc: 'Escape', # pynput usa .esc, Tkinter usa 'Escape'
+            keyboard.Key.f1: 'F1',
+            keyboard.Key.f2: 'F2',
+            keyboard.Key.f3: 'F3',
+            keyboard.Key.f4: 'F4',
+            keyboard.Key.f5: 'F5',
+            keyboard.Key.f6: 'F6',
+            keyboard.Key.f7: 'F7',
+            keyboard.Key.f8: 'F8',
+            keyboard.Key.f9: 'F9',
+            keyboard.Key.f10: 'F10',
+            keyboard.Key.f11: 'F11',
+            keyboard.Key.f12: 'F12',
+            
+            # OTRAS TECLAS ESPECIALES (NUEVAS INCLUSIONES) 💡
+            keyboard.Key.scroll_lock: 'Scroll_Lock',
+            keyboard.Key.pause: 'Pause',
+            
+            # Teclas de navegación
             keyboard.Key.home: 'Home',
             keyboard.Key.end: 'End',
             keyboard.Key.page_up: 'Prior',
@@ -71,7 +108,6 @@ class KeyboardTester:
             keyboard.Key.down: 'Down',
             keyboard.Key.left: 'Left',
             keyboard.Key.right: 'Right',
-            # ¡IMPORTANTE! 'Capsock' en tu layout debe ser 'Caps_Lock' para que el mapeo funcione.
         }
 
         # --- Definición de Layouts ---
@@ -138,11 +174,6 @@ class KeyboardTester:
         self.current_layout_name = self.layout_selector.get()
         self._draw_keyboard(self.layouts[self.current_layout_name])
 
-        # ELIMINAMOS los bindings de Tkinter para que pynput tome el control total y SÍ suprima las teclas.
-        # master.bind('<KeyPress>', self.on_key_press)
-        # master.bind('<KeyRelease>', self.on_key_release)
-        # master.bind('<FocusIn>', lambda e: master.focus_set()) # Esta línea ya no es tan crítica
-
         # 3. Iniciar el Listener de pynput y el Polling de la Cola
         self._start_keyboard_listener()
         self.master.after(10, self.process_tk_queue) 
@@ -158,34 +189,29 @@ class KeyboardTester:
         """Traduce un objeto de tecla de pynput a un keysym de Tkinter."""
         if isinstance(key, keyboard.KeyCode):
             # Para teclas alfanuméricas/símbolos, usa el carácter.
-            # No se necesita keysym.lower()/upper() aquí, se maneja en el mapeo de widgets.
             return key.char if key.char is not None else str(key)
         elif isinstance(key, keyboard.Key):
-            # Para teclas especiales, usa el mapeo del diccionario
+            # Para teclas especiales, usa el mapeo del diccionario (¡Ahora ampliado!)
             return self.key_map.get(key, str(key))
         return str(key)
         
     def on_press_pynput(self, key):
         """Maneja el evento KeyPress desde el hilo de pynput."""
         keysym = self._get_keysym(key)
-        # Enviar el evento al hilo principal de Tkinter
         self.tk_queue.append(('key_press', keysym))
         
     def on_release_pynput(self, key):
         """Maneja el evento KeyRelease desde el hilo de pynput."""
         keysym = self._get_keysym(key)
-        # Enviar el evento al hilo principal de Tkinter
         self.tk_queue.append(('key_release', keysym))
 
     def _start_keyboard_listener(self):
         """Inicia el listener de pynput en un hilo separado con supresión."""
-        # suppress=True es la clave para BLOQUEAR las funciones del sistema (Super, PrtSc)
         self.listener = keyboard.Listener(
             on_press=self.on_press_pynput,
             on_release=self.on_release_pynput,
             suppress=True  
         )
-        # Ejecuta el listener en un hilo secundario
         self.listener.start()
 
     def process_tk_queue(self):
@@ -198,13 +224,11 @@ class KeyboardTester:
             elif event_type == 'key_release':
                 self._handle_key_release_ui(keysym)
                 
-        # Continuar el polling (10ms)
         self.master.after(10, self.process_tk_queue) 
         
     def _handle_key_press_ui(self, keysym):
         """Lógica de Tkinter para la pulsación de tecla."""
-        # La lógica de mapeo mayús/minús ya fue simplificada:
-        # Si la tecla es 'A', busca 'A'. Si no existe, busca 'a'.
+        # Se asegura de buscar el keysym correcto (ej. 'A' o 'a')
         target_keysym = keysym
         if target_keysym not in self.key_widgets and target_keysym.lower() in self.key_widgets:
             target_keysym = target_keysym.lower()
@@ -243,19 +267,13 @@ class KeyboardTester:
         self.master.destroy()
 
     # ---------------------------------------------------------------------
-    # --- Definiciones de Layouts y Funciones de Interfaz (Resto sin cambios) ---
+    # --- Definiciones de Layouts y Funciones de Interfaz (Sin cambios) ---
     # ---------------------------------------------------------------------
 
     def _get_common_special_keys(self):
-        """Define las teclas de función y navegación comunes a ambos layouts."""
-        return [
-            # Tu layout fue simplificado aquí, pero lo mantengo así
-            [] 
-        ]
+        return [[]]
     
     def _get_qwerty_layout(self):
-        """Layout QWERTY estándar (US/UK) con keysyms minúsculos para letras."""
-        # Usaré el layout que proporcionaste, ajustando solo la tecla Num_Lock para que coincida con el mapeo
         layout = self._get_common_special_keys() + [
             # Fila de Funciones y Escape
             [("Escape", "Esc", 1.5), ("F1", "F1"), ("F2", "F2"), ("F3", "F3"), ("F4", "F4"), 
@@ -286,7 +304,6 @@ class KeyboardTester:
         return layout
 
     def _get_azerty_layout(self):
-        """Layout AZERTY estándar (Francés) con keysyms minúsculos para letras."""
         layout = self._get_common_special_keys() + [
             # Fila 1 (Números y Backspace)
             [("twosuperior", "²"), ("ampersand", "1 &"), ("eacute", "2 é"), ("quotedbl", "3 \""), ("apostrophe", "4 '"), 
@@ -335,7 +352,6 @@ class KeyboardTester:
         self.latency_listbox.delete(0, tk.END)
         for widget in self.key_widgets.values():
             widget.config(bg=self.default_color)
-        # tkinter.messagebox.showinfo("Reset Complete", "Key state and latency history have been reset.")
 
     def _create_key_widget(self, parent, text, keysym, width_ratio=1):
         width = int(5 * width_ratio) 
