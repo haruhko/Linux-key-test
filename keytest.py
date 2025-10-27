@@ -26,7 +26,7 @@ except ImportError:
             'menu': 'Menu', 'home': 'Home', 'end': 'End', 'page_up': 'Prior', 
             'page_down': 'Next', 'up': 'Up', 'down': 'Down', 'left': 'Left', 
             'right': 'Right', 'alt_l': 'Alt_L', 'alt_r': 'Alt_R', 'ctrl_l': 'Control_L', 
-            'ctrl_r': 'Control_R', 'shift_l': 'Shift_L', 'shift_r': 'Shift_R'
+            'ctrl_r': 'Control_R', 'shift_l': 'Shift_L', 'shift_r': 'Shift_R','`': '`'
         })
         def Listener(self, *args, **kwargs): return self
         def start(self): pass
