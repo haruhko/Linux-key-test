@@ -51,7 +51,7 @@ class KeyboardTester:
             keyboard.Key.cmd_l: 'Super', # Tecla Windows/Super
             keyboard.Key.cmd_r: 'Super_R', # Tecla Windows/Super
             keyboard.Key.tab: 'Tab',
-            keyboard.Key.caps_lock: 'Capsock',
+            keyboard.Key.capsock: 'Capsock',
             keyboard.Key.backspace: 'BackSpace',
             keyboard.Key.enter: 'Return',
             keyboard.Key.space: 'space',
