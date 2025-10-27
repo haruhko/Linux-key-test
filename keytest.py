@@ -263,4 +263,106 @@ class KeyboardTester:
              ("F9", "F9"), ("F10", "F10"), ("F11", "F11"), ("F12", "F12"),
              ("Num_Lock", "NumLk"),("Print", "PrtSc"), ("Scroll_Lock", "ScrLk"), ("Pause", "Pause")],
             # Fila 1 (Números y Backspace)
-            [("grave", "~ `"), ("1", "1 !"), ("
+            [("grave", "~ `"), ("1", "1 !"), ("2", "2 @"), ("3", "3 #"), ("4", "4 $"), 
+             ("5", "5 %"), ("6", "6 ^"), ("7", "7 &"), ("8", "8 *"), ("9", "9 ("), 
+             ("0", "0 )"), ("minus", "- _"), ("equal", "= +"), ("BackSpace", "⌫ Bksp", 2.2), ("Home", "Home"),("End", "End")],
+            # Fila 2 (QWERTY)
+            [("Tab", "↹ Tab", 1.7), ("q", "Q"), ("w", "W"), ("e", "E"), ("r", "R"), 
+             ("t", "T"), ("y", "Y"), ("u", "U"), ("i", "I"), ("o", "O"), 
+             ("p", "P"), ("bracketleft", "[ {"), ("bracketright", "] }"), ("backslash", "\\ |", 1.3), ("Prior", "PgUp")],
+            # Fila 3 (ASDF)
+            [("Caps_Lock", "⇪ Caps", 2.0), ("a", "A"), ("s", "S"), ("d", "D"), ("f", "F"), 
+             ("g", "G"), ("h", "H"), ("j", "J"), ("k", "K"), ("l", "L"), 
+             ("semicolon", "; :"), ("apostrophe", "' \""), ("Return", "⏎ Enter", 2.0),  ("Next", "PgDn")],
+            # Fila 4 (Shift)
+            [("Shift_L", "⇧ Shift", 2.5), ("z", "Z"), ("x", "X"), ("c", "C"), 
+             ("v", "V"), ("b", "B"), ("n", "N"), ("m", "M"), ("comma", ", <"), 
+             ("period", ". >"), ("slash", "/ ?"), ("Shift_R", "⇧ Shift", 3.0), ("","",0.25),("Up", "↑"),],
+            # Fila 5 (Control, Super, Alt, Space)
+            [("Control_L", "Ctrl", 1.3), ("Super_L", "❖ Super", 1.7), ("Alt_L", "Alt", 1.3), 
+             ("space", "Espacio", 7.0), 
+             ("Alt_R", "Alt", 1.3), ("Menu", "Menu", 1.3),("Insert", "Ins"),("Delete", "Del"), ("Left", "←"), ("Down", "↓"), ("Right", "→")],
+        ]
+        return layout
+
+    def _get_azerty_layout(self):
+        """Layout AZERTY estándar (Francés) con keysyms minúsculos para letras."""
+        layout = self._get_common_special_keys() + [
+            # Fila 1 (Números y Backspace)
+            [("twosuperior", "²"), ("ampersand", "1 &"), ("eacute", "2 é"), ("quotedbl", "3 \""), ("apostrophe", "4 '"), 
+             ("parenleft", "5 ("), ("section", "6 -"), ("egrave", "7 è"), ("underscore", "8 _"), ("ccedilla", "9 ç"), 
+             ("agrave", "0 à"), ("parenright", ")"), ("equal", "= +"), ("BackSpace", "⌫ Bksp", 2.2)],
+            # Fila 2 (AZERTY)
+            [("Tab", "↹ Tab", 1.7), ("a", "A"), ("z", "Z"), ("e", "E"), ("r", "R"), 
+             ("t", "T"), ("y", "Y"), ("u", "U"), ("i", "I"), ("o", "O"), 
+             ("p", "P"), ("dead_circumflex", "^ ¨"), ("dollar", "$ £"), ("asterisk", "* µ", 1.3)],
+            # Fila 3 (QSDF)
+            [("Caps_Lock", "⇪ Caps", 2.0), ("q", "Q"), ("s", "S"), ("d", "D"), ("f", "F"), 
+             ("g", "G"), ("h", "H"), ("j", "J"), ("k", "K"), ("l", "L"), 
+             ("m", "M"), ("ugrave", "ù %"), ("Return", "⏎ Enter", 2.6)],
+            # Fila 4 (Shift)
+            [("Shift_L", "⇧ Shift", 2.5), ("less", "< >"), ("w", "W"), ("x", "X"), ("c", "C"), 
+             ("v", "V"), ("b", "B"), ("n", "N"), ("comma", ","), ("semicolon", ";"), 
+             ("colon", ": /"), ("Shift_R", "⇧ Shift", 3.0)],
+            # Fila 5 (Control, Super, Alt, Space)
+            [("Control_L", "Ctrl", 1.3), ("Super_L", "❖ Super", 1.3), ("Alt_L", "Alt", 1.3), 
+             ("space", "Espacio", 7.0), 
+             ("Alt_R", "Alt", 1.3), ("Super_R", "❖ Super", 1.3), ("Control_R", "Ctrl", 1.3)],
+        ]
+        return layout
+
+    def _clear_keyboard_frame(self):
+        for widget in self.keyboard_frame.winfo_children():
+            widget.destroy()
+        self.key_widgets = {}
+
+    def switch_layout(self, event):
+        new_layout_name = self.layout_selector.get()
+        if new_layout_name != self.current_layout_name:
+            self.current_layout_name = new_layout_name
+            self._clear_keyboard_frame()
+            self._draw_keyboard(self.layouts[new_layout_name])
+            for keysym in self.pressed_keys:
+                 if keysym in self.key_widgets:
+                    self.key_widgets[keysym].config(bg=self.tested_color)
+            
+    def reset_tested_keys(self):
+        if not tkinter.messagebox.askyesno("Confirm Reset", "¿Are you sure you want to reset all keys?"):
+            return
+
+        self.pressed_keys.clear()
+        self.key_press_times.clear()
+        self.latency_listbox.delete(0, tk.END)
+        for widget in self.key_widgets.values():
+            widget.config(bg=self.default_color)
+        # tkinter.messagebox.showinfo("Reset Complete", "Key state and latency history have been reset.")
+
+    def _create_key_widget(self, parent, text, keysym, width_ratio=1):
+        width = int(5 * width_ratio) 
+        initial_color = self.tested_color if keysym in self.pressed_keys else self.default_color
+        key_label = tk.Label(parent, text=text, bg=initial_color, relief="raised", borderwidth=2,
+                             width=width, height=2, font=("Arial", 10, "bold"))
+        self.key_widgets[keysym] = key_label
+        if len(keysym) == 1 and keysym.isalpha():
+            self.key_widgets[keysym.upper()] = key_label
+        return key_label
+
+    def _draw_keyboard(self, layout):
+        for r_index, row in enumerate(layout):
+            row_frame = ttk.Frame(self.keyboard_frame)
+            row_frame.pack(fill="x", pady=2)
+            for key_info in row:
+                if not key_info[0]: 
+                    ttk.Label(row_frame, width=int(5 * key_info[2])).pack(side="left", padx=1)
+                    continue
+                keysym = key_info[0]
+                text = key_info[1]
+                width_ratio = key_info[2] if len(key_info) == 3 else 1
+                key_widget = self._create_key_widget(row_frame, text, keysym, width_ratio)
+                key_widget.pack(side="left", padx=1)
+
+# --- Ejecución del Programa ---
+if __name__ == '__main__':
+    root = tk.Tk()
+    app = KeyboardTester(root)
+    root.mainloop()
