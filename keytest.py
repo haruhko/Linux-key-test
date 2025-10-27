@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
+#!/usr/bin/env python3
 import tkinter as tk
 from datetime import datetime
 from tkinter import ttk, scrolledtext
+import tkinter.messagebox # Necesario para el botón de Reset
 
 class KeyboardTester:
-    """Aplicación para testear las pulsaciones de teclas y su latencia con soporte para QWERTY y AZERTY."""
+    """Aplicación para testear las pulsaciones de teclas y su latencia con soporte para QWERTY y AZERTY,
+    incluyendo mapeo de mayúsculas/minúsculas y botón de reset."""
+    
     def __init__(self, master):
         self.master = master
         master.title("Testeador Visual de Teclado (QWERTY / AZERTY)")
-        master.geometry("1000x700")
+        master.geometry("1100x750") # Tamaño ajustado para un mejor diseño
         
         # --- Variables de estado ---
         self.key_press_times = {}
@@ -27,7 +31,7 @@ class KeyboardTester:
         main_frame = ttk.Frame(master, padding="10")
         main_frame.pack(fill="both", expand=True)
 
-        # 1. Selector de Distribución
+        # 1. Controles, Selector de Distribución y Botón de Reset
         control_frame = ttk.Frame(main_frame)
         control_frame.pack(fill="x", pady=10)
 
@@ -42,6 +46,10 @@ class KeyboardTester:
         self.layout_selector.current(0) # Seleccionar QWERTY por defecto
         self.layout_selector.bind("<<ComboboxSelected>>", self.switch_layout)
         self.layout_selector.pack(side="left", padx=5)
+        
+        # Botón de Reset
+        ttk.Button(control_frame, text="🔁 Resetear Teclas Testeadas", command=self.reset_tested_keys).pack(side="right")
+
 
         # 2. Contenedor Principal (Teclado + Lista)
         content_frame = ttk.Frame(main_frame)
@@ -76,76 +84,89 @@ class KeyboardTester:
         master.bind('<KeyRelease>', self.on_key_release)
         master.bind('<FocusIn>', lambda e: master.focus_set()) # Asegurar que la ventana tiene el foco
 
-    # --- Definiciones de Layouts ---
+    # ---------------------------------------------------------------------
+    # --- Definiciones de Layouts (Ajustados con la tecla 'Super') ---
+    # ---------------------------------------------------------------------
+
     def _get_common_special_keys(self):
         """Define las teclas de función y navegación comunes a ambos layouts."""
         return [
             # Fila de Funciones y Escape
-            [("Escape", "Esc", 1), ("F1", "F1"), ("F2", "F2"), ("F3", "F3"), ("F4", "F4", 1.5), 
-             ("F5", "F5"), ("F6", "F6"), ("F7", "F7"), ("F8", "F8", 1.5), 
-             ("F9", "F9"), ("F10", "F10"), ("F11", "F11"), ("F12", "F12")],
-            # Bloque de edición/Navegación
-            [("Print", "PrtSc"), ("Scroll_Lock", "ScrLk"), ("Pause", "Pause", 1)], # Teclas especiales arriba
-            [("Insert", "Ins"), ("Delete", "Del"), ("Home", "Home"), ("End", "End")],
-            [("Prior", "PgUp"), ("Next", "PgDn")],
-            # Flechas de Navegación
-            [("", "", 1), ("", "", 1), ("Up", "↑"), ("", "", 1)], # Fila superior flechas
-            [("Left", "←"), ("Down", "↓"), ("Right", "→")], # Fila inferior flechas
+            [("Escape", "Esc", 1.5), ("F1", "F1"), ("F2", "F2"), ("F3", "F3"), ("F4", "F4"), 
+             ("F5", "F5"), ("F6", "F6"), ("F7", "F7"), ("F8", "F8"), 
+             ("F9", "F9"), ("F10", "F10"), ("F11", "F11"), ("F12", "F12"),
+             ("", "", 1.5), ("Print", "PrtSc"), ("Scroll_Lock", "ScrLk"), ("Pause", "Pause")],
+            
+            # Separador para teclado principal
+            [], 
+            
+            # Bloque de edición/Navegación (Separado del principal)
+            [("", "", 10), ("Insert", "Ins"), ("Home", "Home"), ("Prior", "PgUp")],
+            [("", "", 10), ("Delete", "Del"), ("End", "End"), ("Next", "PgDn")],
+            
+            # Flechas de Navegación (Posicionamiento Típico)
+            [("", "", 10), ("", "", 1.5), ("Up", "↑"), ("", "", 1)], 
+            [("", "", 10), ("Left", "←"), ("Down", "↓"), ("Right", "→")], 
+            
+            # Separador para teclado principal
+            [] 
         ]
     
     def _get_qwerty_layout(self):
-        """Layout QWERTY estándar (US/UK)."""
+        """Layout QWERTY estándar (US/UK) con keysyms minúsculos para letras."""
         layout = self._get_common_special_keys() + [
-            # Fila 2 (Números y Backspace)
+            # Fila 1 (Números y Backspace)
             [("grave", "~ `"), ("1", "1 !"), ("2", "2 @"), ("3", "3 #"), ("4", "4 $"), 
              ("5", "5 %"), ("6", "6 ^"), ("7", "7 &"), ("8", "8 *"), ("9", "9 ("), 
-             ("0", "0 )"), ("minus", "- _"), ("equal", "= +"), ("BackSpace", "⌫ Backspace", 2)],
-            # Fila 3 (QWERTY)
-            [("Tab", "↹ Tab", 1.5), ("q", "Q"), ("w", "W"), ("e", "E"), ("r", "R"), 
+             ("0", "0 )"), ("minus", "- _"), ("equal", "= +"), ("BackSpace", "⌫ Bksp", 2.2)],
+            # Fila 2 (QWERTY)
+            [("Tab", "↹ Tab", 1.7), ("q", "Q"), ("w", "W"), ("e", "E"), ("r", "R"), 
              ("t", "T"), ("y", "Y"), ("u", "U"), ("i", "I"), ("o", "O"), 
-             ("p", "P"), ("bracketleft", "[ {"), ("bracketright", "] }"), ("backslash", "\\ |", 1.5)],
-            # Fila 4 (ASDF)
-            [("Caps_Lock", "⇪ Caps", 1.75), ("A or a", "A"), ("s || S", "S"), ("d", "D"), ("f", "F"), 
+             ("p", "P"), ("bracketleft", "[ {"), ("bracketright", "] }"), ("backslash", "\\ |", 1.3)],
+            # Fila 3 (ASDF)
+            [("Caps_Lock", "⇪ Caps", 2.0), ("a", "A"), ("s", "S"), ("d", "D"), ("f", "F"), 
              ("g", "G"), ("h", "H"), ("j", "J"), ("k", "K"), ("l", "L"), 
-             ("semicolon", "; :"), ("apostrophe", "' \""), ("Return", "⏎ Enter", 2.25)],
-            # Fila 5 (Shift)
-            [("Shift_L", "⇧ Shift", 2.25), ("z", "Z"), ("x", "X"), ("c", "C"), 
+             ("semicolon", "; :"), ("apostrophe", "' \""), ("Return", "⏎ Enter", 2.6)],
+            # Fila 4 (Shift)
+            [("Shift_L", "⇧ Shift", 2.5), ("z", "Z"), ("x", "X"), ("c", "C"), 
              ("v", "V"), ("b", "B"), ("n", "N"), ("m", "M"), ("comma", ", <"), 
-             ("period", ". >"), ("slash", "/ ?"), ("Shift_R", "⇧ Shift", 2.75)],
-            # Fila 6 (Control, Alt, Space)
-            [("Control_L", "Ctrl", 1.25), ("Alt_L", "Alt", 1.25), ("space", "Espacio", 6.5), 
-             ("Alt_R", "Alt", 1.25), ("Control_R", "Ctrl", 1.25)],
+             ("period", ". >"), ("slash", "/ ?"), ("Shift_R", "⇧ Shift", 3.0)],
+            # Fila 5 (Control, Super, Alt, Space) - Super es 'Super_L' en Tkinter
+            [("Control_L", "Ctrl", 1.3), ("Super_L", "❖ Super", 1.3), ("Alt_L", "Alt", 1.3), 
+             ("space", "Espacio", 7.0), 
+             ("Alt_R", "Alt", 1.3), ("Super_R", "❖ Super", 1.3), ("Control_R", "Ctrl", 1.3)],
         ]
         return layout
 
     def _get_azerty_layout(self):
-        """Layout AZERTY estándar (Francés)."""
-        # Nota: El 'keysym' de Tkinter para letras y números es a menudo independiente del layout físico,
-        # pero redefinimos el texto visible y la posición para simular AZERTY.
+        """Layout AZERTY estándar (Francés) con keysyms minúsculos para letras."""
         layout = self._get_common_special_keys() + [
-            # Fila 2 (Números y Backspace)
+            # Fila 1 (Números y Backspace)
             [("twosuperior", "²"), ("ampersand", "1 &"), ("eacute", "2 é"), ("quotedbl", "3 \""), ("apostrophe", "4 '"), 
              ("parenleft", "5 ("), ("section", "6 -"), ("egrave", "7 è"), ("underscore", "8 _"), ("ccedilla", "9 ç"), 
-             ("agrave", "0 à"), ("parenright", ")"), ("equal", "= +"), ("BackSpace", "⌫ Backspace", 2)],
-            # Fila 3 (AZERTY)
-            [("Tab", "↹ Tab", 1.5), ("a", "A"), ("z", "Z"), ("e", "E"), ("r", "R"), 
+             ("agrave", "0 à"), ("parenright", ")"), ("equal", "= +"), ("BackSpace", "⌫ Bksp", 2.2)],
+            # Fila 2 (AZERTY)
+            [("Tab", "↹ Tab", 1.7), ("a", "A"), ("z", "Z"), ("e", "E"), ("r", "R"), 
              ("t", "T"), ("y", "Y"), ("u", "U"), ("i", "I"), ("o", "O"), 
-             ("p", "P"), ("dead_circumflex", "^"), ("dollar", "$ £"), ("asterisk", "*", 1.5)],
-            # Fila 4 (QSDF)
-            [("Caps_Lock", "⇪ Caps", 1.75), ("q", "Q"), ("s", "S"), ("d", "D"), ("f", "F"), 
+             ("p", "P"), ("dead_circumflex", "^ ¨"), ("dollar", "$ £"), ("asterisk", "* µ", 1.3)],
+            # Fila 3 (QSDF)
+            [("Caps_Lock", "⇪ Caps", 2.0), ("q", "Q"), ("s", "S"), ("d", "D"), ("f", "F"), 
              ("g", "G"), ("h", "H"), ("j", "J"), ("k", "K"), ("l", "L"), 
-             ("m", "M"), ("ugrave", "ù %"), ("Return", "⏎ Enter", 2.25)],
-            # Fila 5 (Shift)
-            [("Shift_L", "⇧ Shift", 2.25), ("less", "<"), ("w", "W"), ("x", "X"), ("c", "C"), 
+             ("m", "M"), ("ugrave", "ù %"), ("Return", "⏎ Enter", 2.6)],
+            # Fila 4 (Shift)
+            [("Shift_L", "⇧ Shift", 2.5), ("less", "< >"), ("w", "W"), ("x", "X"), ("c", "C"), 
              ("v", "V"), ("b", "B"), ("n", "N"), ("comma", ","), ("semicolon", ";"), 
-             ("colon", ": /"), ("Shift_R", "⇧ Shift", 2.75)],
-            # Fila 6 (Control, Alt, Space)
-            [("Control_L", "Ctrl", 1.25), ("Alt_L", "Alt", 1.25), ("space", "Espacio", 6.5), 
-             ("Alt_R", "Alt", 1.25), ("Control_R", "Ctrl", 1.25)],
+             ("colon", ": /"), ("Shift_R", "⇧ Shift", 3.0)],
+            # Fila 5 (Control, Super, Alt, Space)
+            [("Control_L", "Ctrl", 1.3), ("Super_L", "❖ Super", 1.3), ("Alt_L", "Alt", 1.3), 
+             ("space", "Espacio", 7.0), 
+             ("Alt_R", "Alt", 1.3), ("Super_R", "❖ Super", 1.3), ("Control_R", "Ctrl", 1.3)],
         ]
         return layout
 
-    # --- Funciones de Interfaz ---
+    # ---------------------------------------------------------------------
+    # --- Funciones de Interfaz (Modificado el mapeo) ---
+    # ---------------------------------------------------------------------
 
     def _clear_keyboard_frame(self):
         """Elimina todos los widgets del marco del teclado."""
@@ -160,13 +181,32 @@ class KeyboardTester:
             self.current_layout_name = new_layout_name
             self._clear_keyboard_frame()
             self._draw_keyboard(self.layouts[new_layout_name])
+            
             # Restaurar colores de teclas previamente presionadas
             for keysym in self.pressed_keys:
                  if keysym in self.key_widgets:
                     self.key_widgets[keysym].config(bg=self.tested_color)
             
+    def reset_tested_keys(self):
+        """Reinicia el estado de las teclas testeadas (color amarillo) y la lista de latencias."""
+        if not tkinter.messagebox.askyesno("Confirmar Reset", "¿Estás seguro de que quieres resetear el estado de todas las teclas testeadas?"):
+            return
+
+        self.pressed_keys.clear()
+        self.key_press_times.clear()
+        self.latency_listbox.delete(0, tk.END)
+        
+        # Devolver el color de todas las teclas al estado por defecto
+        for widget in self.key_widgets.values():
+            widget.config(bg=self.default_color)
+        
+        tkinter.messagebox.showinfo("Reset Completo", "El estado de las teclas y el historial de latencias han sido reseteados.")
+
     def _create_key_widget(self, parent, text, keysym, width_ratio=1):
-        """Crea y posiciona un Label que representa una tecla."""
+        """
+        Crea un Label para la tecla y la mapea a sí misma y a su versión mayúscula 
+        (si es una letra) en self.key_widgets.
+        """
         width = int(5 * width_ratio) 
         
         # Determinar el color inicial
@@ -181,7 +221,14 @@ class KeyboardTester:
                              height=2,
                              font=("Arial", 10, "bold"))
         
+        # 1. Almacenar el keysym principal (ej: 'a')
         self.key_widgets[keysym] = key_label
+        
+        # 2. Si es una letra, mapear también la versión mayúscula (ej: 'A')
+        # Esto soluciona el problema de que 's' y 'S' se manejen por separado.
+        if len(keysym) == 1 and keysym.isalpha():
+            self.key_widgets[keysym.upper()] = key_label
+            
         return key_label
 
     def _draw_keyboard(self, layout):
@@ -202,7 +249,9 @@ class KeyboardTester:
                 key_widget = self._create_key_widget(row_frame, text, keysym, width_ratio)
                 key_widget.pack(side="left", padx=1)
 
-    # --- Manejo de Eventos de Teclado ---
+    # ---------------------------------------------------------------------
+    # --- Manejo de Eventos de Teclado (Usa el mapeo mayús/minús) ---
+    # ---------------------------------------------------------------------
 
     def on_key_press(self, event):
         """Maneja el evento de pulsación: pinta la tecla y registra el tiempo."""
@@ -211,9 +260,13 @@ class KeyboardTester:
         # Registrar tiempo de pulsación
         self.key_press_times[keysym] = datetime.now()
 
-        # Pintar la tecla activa
+        # Pintar la tecla activa (funcionará para 's' o 'S')
         if keysym in self.key_widgets:
             self.key_widgets[keysym].config(bg=self.active_color)
+        
+        # Nota: Como este es el script base de Tkinter, las teclas como Print Screen 
+        # y Super seguirán activando la funcionalidad del sistema operativo, 
+        # ya que Tkinter no puede bloquearlas. Solo el script con pynput puede hacer eso.
 
     def on_key_release(self, event):
         """Maneja el evento de liberación: calcula latencia y actualiza el estado."""
@@ -239,7 +292,5 @@ class KeyboardTester:
 # --- Ejecución del Programa ---
 if __name__ == '__main__':
     root = tk.Tk()
-    # Usar el shebang si se va a ejecutar directamente en Linux
-    # #!/usr/bin/env python3 
     app = KeyboardTester(root)
     root.mainloop()
