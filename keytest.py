@@ -101,8 +101,8 @@ class KeyboardTester:
             [], 
             
             # Bloque de edición/Navegación (Separado del principal)
-            [("", "", 10), ("Insert", "Ins"), ("Home", "Home"), ("Prior", "PgUp")],
-            [("", "", 10), ("Delete", "Del"), ("End", "End"), ("Next", "PgDn")],
+            [("", "", 10),  ("Home", "Home"), ("Prior", "PgUp")],
+            [("", "", 10), ("End", "End"), ("Next", "PgDn")],
             
             # Flechas de Navegación (Posicionamiento Típico)
             [("", "", 10), ("", "", 1.5), ("Up", "↑"), ("", "", 1)], 
@@ -115,6 +115,11 @@ class KeyboardTester:
     def _get_qwerty_layout(self):
         """Layout QWERTY estándar (US/UK) con keysyms minúsculos para letras."""
         layout = self._get_common_special_keys() + [
+              # Fila de Funciones y Escape
+            [("Escape", "Esc", 1.5), ("F1", "F1"), ("F2", "F2"), ("F3", "F3"), ("F4", "F4"), 
+             ("F5", "F5"), ("F6", "F6"), ("F7", "F7"), ("F8", "F8"), 
+             ("F9", "F9"), ("F10", "F10"), ("F11", "F11"), ("F12", "F12"),
+             ("", "", 1.5), ("Print", "PrtSc"), ("Scroll_Lock", "ScrLk"), ("Pause", "Pause")],
             # Fila 1 (Números y Backspace)
             [("grave", "~ `"), ("1", "1 !"), ("2", "2 @"), ("3", "3 #"), ("4", "4 $"), 
              ("5", "5 %"), ("6", "6 ^"), ("7", "7 &"), ("8", "8 *"), ("9", "9 ("), 
@@ -134,7 +139,7 @@ class KeyboardTester:
             # Fila 5 (Control, Super, Alt, Space) - Super es 'Super_L' en Tkinter
             [("Control_L", "Ctrl", 1.3), ("Super_L", "❖ Super", 1.3), ("Alt_L", "Alt", 1.3), 
              ("space", "Espacio", 7.0), 
-             ("Alt_R", "Alt", 1.3), ("Super_R", "❖ Super", 1.3), ("Control_R", "Ctrl", 1.3)],
+             ("Alt_R", "Alt", 1.3), ("Menu", "Menu", 1.3),("Insert", "Ins"),("Delete", "Del")],
         ]
         return layout
 
