@@ -87,7 +87,7 @@ class KeyboardTester:
             # Bloque de edición/Navegación
             [("Print", "PrtSc"), ("Scroll_Lock", "ScrLk"), ("Pause", "Pause", 1)], # Teclas especiales arriba
             [("Insert", "Ins"), ("Delete", "Del"), ("Home", "Home"), ("End", "End")],
-            [("Page_Up", "PgUp"), ("Page_Down", "PgDn")],
+            [("Prior", "PgUp"), ("Next", "PgDn")],
             # Flechas de Navegación
             [("", "", 1), ("", "", 1), ("Up", "↑"), ("", "", 1)], # Fila superior flechas
             [("Left", "←"), ("Down", "↓"), ("Right", "→")], # Fila inferior flechas
