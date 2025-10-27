@@ -117,8 +117,8 @@ class KeyboardTester:
         self.current_layout_name = self.layout_selector.get()
         self._draw_keyboard(self.layouts[self.current_layout_name])
 
-        master.bind('<KeyPress>', self.on_key_press)
-        master.bind('<KeyRelease>', self.on_key_release)
+        #master.bind('<KeyPress>', self.on_key_press)
+        #master.bind('<KeyRelease>', self.on_key_release)
         master.bind('<FocusIn>', lambda e: master.focus_set()) # Asegurar que la ventana tiene el foco
 
     # 3. Iniciar el Listener de pynput y el Polling de la Cola
