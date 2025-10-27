@@ -254,4 +254,72 @@ class KeyboardTester:
     def _draw_keyboard(self, layout):
         for r_index, row in enumerate(layout):
             row_frame = ttk.Frame(self.keyboard_frame)
-            row_frame.pack(fill="x
+            row_frame.pack(fill="x", pady=2, padx=2) 
+            
+            for key_info in row:
+                if not key_info[0]: 
+                    ttk.Label(row_frame, width=int(5 * key_info[2])).pack(side="left", padx=1)
+                    continue
+                keysym = key_info[0]
+                text = key_info[1]
+                width_ratio = key_info[2] if len(key_info) == 3 else 1
+                key_widget = self._create_key_widget(row_frame, text, keysym, width_ratio)
+                key_widget.pack(side="left", padx=1)
+
+    # --- Definiciones de Layouts (MISMAS QUE ANTES) ---
+    def _get_common_special_keys(self):
+        row_f_keys = [("Escape", "Esc", 1.5), ("F1", "F1"), ("F2", "F2"), ("F3", "F3"), ("F4", "F4"), 
+                      ("F5", "F5"), ("F6", "F6"), ("F7", "F7"), ("F8", "F8"), 
+                      ("F9", "F9"), ("F10", "F10"), ("F11", "F11"), ("F12", "F12"),
+                      ("", "", 1.5), ("Print_Screen", "PrtSc"), ("Scroll_Lock", "ScrLk"), ("Pause", "Pause")]
+        row_nav_1 = [("", "", 1), ("Insert", "Ins"), ("Home", "Home"), ("Page_Up", "PgUp")]
+        row_nav_2 = [("", "", 1), ("Delete", "Del"), ("End", "End"), ("Page_Down", "PgDn")]
+        row_arrows_1 = [("", "", 1), ("", "", 1), ("", "", 1), ("Up", "↑"), ("", "", 1)]
+        row_arrows_2 = [("", "", 1), ("", "", 1), ("Left", "←"), ("Down", "↓"), ("Right", "→")]
+        return [row_f_keys, [], row_nav_1, row_nav_2, [], row_arrows_1, row_arrows_2]
+
+    def _get_qwerty_layout(self):
+        layout = self._get_common_special_keys() + [
+            [("asciitilde", "~ `"), ("1", "1 !"), ("2", "2 @"), ("3", "3 #"), ("4", "4 $"), 
+             ("5", "5 %"), ("6", "6 ^"), ("7", "7 &"), ("8", "8 *"), ("9", "9 ("), 
+             ("0", "0 )"), ("minus", "- _"), ("equal", "= +"), ("BackSpace", "⌫ Bksp", 2.2)],
+            [("Tab", "↹ Tab", 1.7), ("q", "Q"), ("w", "W"), ("e", "E"), ("r", "R"), 
+             ("t", "T"), ("y", "Y"), ("u", "U"), ("i", "I"), ("o", "O"), 
+             ("p", "P"), ("bracketleft", "[ {"), ("bracketright", "] }"), ("backslash", "\\ |", 1.3)],
+            [("Caps_Lock", "⇪ Caps", 2.0), ("a", "A"), ("s", "S"), ("d", "D"), ("f", "F"), 
+             ("g", "G"), ("h", "H"), ("j", "J"), ("k", "K"), ("l", "L"), 
+             ("semicolon", "; :"), ("apostrophe", "' \""), ("Return", "⏎ Enter", 2.6)],
+            [("Shift_L", "⇧ Shift", 2.5), ("z", "Z"), ("x", "X"), ("c", "C"), 
+             ("v", "V"), ("b", "B"), ("n", "N"), ("m", "M"), ("comma", ", <"), 
+             ("period", ". >"), ("slash", "/ ?"), ("Shift_R", "⇧ Shift", 3.0)],
+            [("Control_L", "Ctrl", 1.3), ("Super_L", "❖ Super", 1.3), ("Alt_L", "Alt", 1.3), 
+             ("space", "Espacio", 7.0), 
+             ("Alt_R", "Alt", 1.3), ("Super_R", "❖ Super", 1.3), ("Control_R", "Ctrl", 1.3)],
+        ]
+        return layout
+
+    def _get_azerty_layout(self):
+        layout = self._get_common_special_keys() + [
+            [("twosuperior", "²"), ("ampersand", "1 &"), ("eacute", "2 é"), ("quotedbl", "3 \""), ("apostrophe", "4 '"), 
+             ("parenleft", "5 ("), ("section", "6 -"), ("egrave", "7 è"), ("underscore", "8 _"), ("ccedilla", "9 ç"), 
+             ("agrave", "0 à"), ("parenright", ")"), ("equal", "= +"), ("BackSpace", "⌫ Bksp", 2.2)],
+            [("Tab", "↹ Tab", 1.7), ("a", "A"), ("z", "Z"), ("e", "E"), ("r", "R"), 
+             ("t", "T"), ("y", "Y"), ("u", "U"), ("i", "I"), ("o", "O"), 
+             ("p", "P"), ("dead_circumflex", "^ ¨"), ("dollar", "$ £"), ("asterisk", "* µ", 1.3)],
+            [("Caps_Lock", "⇪ Caps", 2.0), ("q", "Q"), ("s", "S"), ("d", "D"), ("f", "F"), 
+             ("g", "G"), ("h", "H"), ("j", "J"), ("k", "K"), ("l", "L"), 
+             ("m", "M"), ("ugrave", "ù %"), ("Return", "⏎ Enter", 2.6)],
+            [("Shift_L", "⇧ Shift", 2.5), ("less", "< >"), ("w", "W"), ("x", "X"), ("c", "C"), 
+             ("v", "V"), ("b", "B"), ("n", "N"), ("m", "M"), ("comma", ","), ("semicolon", ";"), 
+             ("colon", ": /"), ("Shift_R", "⇧ Shift", 3.0)],
+            [("Control_L", "Ctrl", 1.3), ("Super_L", "❖ Super", 1.3), ("Alt_L", "Alt", 1.3), 
+             ("space", "Espacio", 7.0), 
+             ("Alt_R", "Alt", 1.3), ("Super_R", "❖ Super", 1.3), ("Control_R", "Ctrl", 1.3)],
+        ]
+        return layout
+
+# --- Ejecución del Programa ---
+if __name__ == '__main__':
+    root = tk.Tk()
+    app = KeyboardTester(root)
+    root.mainloop()
