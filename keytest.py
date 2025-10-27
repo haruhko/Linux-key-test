@@ -37,6 +37,7 @@ class KeyboardTester:
         self.default_color = "gray80"
         self.active_color = "green"
         self.tested_color = "khaki1"  # Color amarillo suave para teclas ya testeadas
+        self.tk_queue = []
 
         # --- Configuración de Pynput (Mapeo de teclas especiales) ---
         # Mapea las teclas de pynput a los keysyms de Tkinter
