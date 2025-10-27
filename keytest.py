@@ -119,28 +119,27 @@ class KeyboardTester:
             [("Escape", "Esc", 1.5), ("F1", "F1"), ("F2", "F2"), ("F3", "F3"), ("F4", "F4"), 
              ("F5", "F5"), ("F6", "F6"), ("F7", "F7"), ("F8", "F8"), 
              ("F9", "F9"), ("F10", "F10"), ("F11", "F11"), ("F12", "F12"),
-             ("Num_Lock", "NumLk"),("Print", "PrtSc"), ("Scroll_Lock", "ScrLk"), ("Pause", "Pause"),
-             ("", "", 1.5), ("Print", "PrtSc"), ("Scroll_Lock", "ScrLk"), ("Pause", "Pause")],
+             ("Num_Lock", "NumLk"),("Print", "PrtSc"), ("Scroll_Lock", "ScrLk"), ("Pause", "Pause")],
             # Fila 1 (Números y Backspace)
             [("grave", "~ `"), ("1", "1 !"), ("2", "2 @"), ("3", "3 #"), ("4", "4 $"), 
              ("5", "5 %"), ("6", "6 ^"), ("7", "7 &"), ("8", "8 *"), ("9", "9 ("), 
-             ("0", "0 )"), ("minus", "- _"), ("equal", "= +"), ("BackSpace", "⌫ Bksp", 2.2), ("Home", "Home")],
+             ("0", "0 )"), ("minus", "- _"), ("equal", "= +"), ("BackSpace", "⌫ Bksp", 2.2),("", "", 2), ("Home", "Home")],
             # Fila 2 (QWERTY)
             [("Tab", "↹ Tab", 1.7), ("q", "Q"), ("w", "W"), ("e", "E"), ("r", "R"), 
              ("t", "T"), ("y", "Y"), ("u", "U"), ("i", "I"), ("o", "O"), 
-             ("p", "P"), ("bracketleft", "[ {"), ("bracketright", "] }"), ("backslash", "\\ |", 1.3), ("Prior", "PgUp")],
+             ("p", "P"), ("bracketleft", "[ {"), ("bracketright", "] }"), ("backslash", "\\ |", 1.3),("", "", 2), ("Prior", "PgUp")],
             # Fila 3 (ASDF)
             [("Caps_Lock", "⇪ Caps", 2.0), ("a", "A"), ("s", "S"), ("d", "D"), ("f", "F"), 
              ("g", "G"), ("h", "H"), ("j", "J"), ("k", "K"), ("l", "L"), 
-             ("semicolon", "; :"), ("apostrophe", "' \""), ("Return", "⏎ Enter", 2.6),  ("Next", "PgDn")],
+             ("semicolon", "; :"), ("apostrophe", "' \""), ("Return", "⏎ Enter", 2.6),("", "", 2),  ("Next", "PgDn")],
             # Fila 4 (Shift)
             [("Shift_L", "⇧ Shift", 2.5), ("z", "Z"), ("x", "X"), ("c", "C"), 
              ("v", "V"), ("b", "B"), ("n", "N"), ("m", "M"), ("comma", ", <"), 
-             ("period", ". >"), ("slash", "/ ?"), ("Shift_R", "⇧ Shift", 3.0), ("End", "End")],
+             ("period", ". >"), ("slash", "/ ?"), ("Shift_R", "⇧ Shift", 3.0),("", "", 2), ("End", "End")],
             # Fila 5 (Control, Super, Alt, Space) - Super es 'Super_L' en Tkinter
-            [("Control_L", "Ctrl", 1.3), ("Super_L", "❖ Super", 1.3), ("Alt_L", "Alt", 1.3), 
+            [("Control_L", "Ctrl", 1.3), ("Super_L", "❖ Super", 1.7), ("Alt_L", "Alt", 1.3), 
              ("space", "Espacio", 7.0), 
-             ("Alt_R", "Alt", 1.3), ("Menu", "Menu", 1.3),("Insert", "Ins"),("Delete", "Del")],
+             ("Alt_R", "Alt", 1.3), ("Menu", "Menu", 1.3),("Insert", "Ins"),("", "", 2),("Delete", "Del")],
         ]
         return layout
 
