@@ -97,7 +97,7 @@ class KeyboardTester:
         """Layout QWERTY estándar (US/UK)."""
         layout = self._get_common_special_keys() + [
             # Fila 2 (Números y Backspace)
-            [("asciitilde", "~ `"), ("1", "1 !"), ("2", "2 @"), ("3", "3 #"), ("4", "4 $"), 
+            [("grave", "~ `"), ("1", "1 !"), ("2", "2 @"), ("3", "3 #"), ("4", "4 $"), 
              ("5", "5 %"), ("6", "6 ^"), ("7", "7 &"), ("8", "8 *"), ("9", "9 ("), 
              ("0", "0 )"), ("minus", "- _"), ("equal", "= +"), ("BackSpace", "⌫ Backspace", 2)],
             # Fila 3 (QWERTY)
@@ -105,7 +105,7 @@ class KeyboardTester:
              ("t", "T"), ("y", "Y"), ("u", "U"), ("i", "I"), ("o", "O"), 
              ("p", "P"), ("bracketleft", "[ {"), ("bracketright", "] }"), ("backslash", "\\ |", 1.5)],
             # Fila 4 (ASDF)
-            [("Caps_Lock", "⇪ Caps", 1.75), ("a", "A"), ("s", "S"), ("d", "D"), ("f", "F"), 
+            [("Caps_Lock", "⇪ Caps", 1.75), ("a A", "A"), ("s", "S"), ("d", "D"), ("f", "F"), 
              ("g", "G"), ("h", "H"), ("j", "J"), ("k", "K"), ("l", "L"), 
              ("semicolon", "; :"), ("apostrophe", "' \""), ("Return", "⏎ Enter", 2.25)],
             # Fila 5 (Shift)
