@@ -91,22 +91,7 @@ class KeyboardTester:
     def _get_common_special_keys(self):
         """Define las teclas de función y navegación comunes a ambos layouts."""
         return [
-            # Fila de Funciones y Escape
-            [("Escape", "Esc", 1.5), ("F1", "F1"), ("F2", "F2"), ("F3", "F3"), ("F4", "F4"), 
-             ("F5", "F5"), ("F6", "F6"), ("F7", "F7"), ("F8", "F8"), 
-             ("F9", "F9"), ("F10", "F10"), ("F11", "F11"), ("F12", "F12"),
-             ("", "", 1.5), ("Print", "PrtSc"), ("Scroll_Lock", "ScrLk"), ("Pause", "Pause")],
-            
-            # Separador para teclado principal
-            [], 
-            
-            # Bloque de edición/Navegación (Separado del principal)
-            [("", "", 10),  ("Home", "Home"), ("Prior", "PgUp")],
-            [("", "", 10), ("End", "End"), ("Next", "PgDn")],
-            
-            # Flechas de Navegación (Posicionamiento Típico)
-            [("", "", 10), ("", "", 1.5), ("Up", "↑"), ("", "", 1)], 
-            [("", "", 10), ("Left", "←"), ("Down", "↓"), ("Right", "→")], 
+           
             
             # Separador para teclado principal
             [] 
@@ -131,11 +116,11 @@ class KeyboardTester:
             # Fila 3 (ASDF)
             [("Caps_Lock", "⇪ Caps", 2.0), ("a", "A"), ("s", "S"), ("d", "D"), ("f", "F"), 
              ("g", "G"), ("h", "H"), ("j", "J"), ("k", "K"), ("l", "L"), 
-             ("semicolon", "; :"), ("apostrophe", "' \""), ("Return", "⏎ Enter", 2.6),  ("Next", "PgDn")],
+             ("semicolon", "; :"), ("apostrophe", "' \""), ("Return", "⏎ Enter", 2.6),  ("Next", "PgDn"),("End", "End"),],
             # Fila 4 (Shift)
             [("Shift_L", "⇧ Shift", 2.5), ("z", "Z"), ("x", "X"), ("c", "C"), 
              ("v", "V"), ("b", "B"), ("n", "N"), ("m", "M"), ("comma", ", <"), 
-             ("period", ". >"), ("slash", "/ ?"), ("Shift_R", "⇧ Shift", 3.0),("End", "End"),("", "", 1.5), ("Up", "↑"),],
+             ("period", ". >"), ("slash", "/ ?"), ("Shift_R", "⇧ Shift", 3.0),("", "", 1.5), ("Up", "↑"),],
             # Fila 5 (Control, Super, Alt, Space) - Super es 'Super_L' en Tkinter
             [("Control_L", "Ctrl", 1.3), ("Super_L", "❖ Super", 1.7), ("Alt_L", "Alt", 1.3), 
              ("space", "Espacio", 7.0), 
