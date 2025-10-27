@@ -105,7 +105,7 @@ class KeyboardTester:
              ("t", "T"), ("y", "Y"), ("u", "U"), ("i", "I"), ("o", "O"), 
              ("p", "P"), ("bracketleft", "[ {"), ("bracketright", "] }"), ("backslash", "\\ |", 1.5)],
             # Fila 4 (ASDF)
-            [("Caps_Lock", "⇪ Caps", 1.75), ("a A", "A"), ("s", "S"), ("d", "D"), ("f", "F"), 
+            [("Caps_Lock", "⇪ Caps", 1.75), ("A or a", "A"), ("s || S", "S"), ("d", "D"), ("f", "F"), 
              ("g", "G"), ("h", "H"), ("j", "J"), ("k", "K"), ("l", "L"), 
              ("semicolon", "; :"), ("apostrophe", "' \""), ("Return", "⏎ Enter", 2.25)],
             # Fila 5 (Shift)
