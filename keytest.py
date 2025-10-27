@@ -120,7 +120,7 @@ class KeyboardTester:
             # Fila 4 (Shift)
             [("Shift_L", "⇧ Shift", 2.5), ("z", "Z"), ("x", "X"), ("c", "C"), 
              ("v", "V"), ("b", "B"), ("n", "N"), ("m", "M"), ("comma", ", <"), 
-             ("period", ". >"), ("slash", "/ ?"), ("Shift_R", "⇧ Shift", 3.0), ("",0.4),("Up", "↑"),],
+             ("period", ". >"), ("slash", "/ ?"), ("Shift_R", "⇧ Shift", 3.0), ("","",0.4),("Up", "↑"),],
             # Fila 5 (Control, Super, Alt, Space) - Super es 'Super_L' en Tkinter
             [("Control_L", "Ctrl", 1.3), ("Super_L", "❖ Super", 1.7), ("Alt_L", "Alt", 1.3), 
              ("space", "Espacio", 7.0), 
