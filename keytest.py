@@ -3,6 +3,7 @@ import tkinter as tk
 from datetime import datetime
 from tkinter import ttk, scrolledtext
 import tkinter.messagebox # Necesario para el botón de Reset
+import keyboard
 
 class KeyboardTester:
     """Aplicación para testear las pulsaciones de teclas y su latencia con soporte para QWERTY y AZERTY,
